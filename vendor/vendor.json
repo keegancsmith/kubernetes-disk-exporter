@@ -3,10 +3,70 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "4QnLdmB1kG3N+KlDd1N+G9TWAGQ=",
+			"path": "github.com/beorn7/perks/quantile",
+			"revision": "b965b613227fddccbfffe13eae360ed3fa822f8d",
+			"revisionTime": "2015-02-23T13:51:52Z"
+		},
+		{
 			"checksumSHA1": "KcxHd9tdO+5C/G08iehlwZOzNCE=",
 			"path": "github.com/docker/docker/pkg/mount",
 			"revision": "f8656a6e37ded7d1558b4003c7a527861cd3aef6",
 			"revisionTime": "2016-06-21T10:22:28Z"
+		},
+		{
+			"checksumSHA1": "XnbEHQRzINRKXKmu9GcaqGkK4Lg=",
+			"path": "github.com/golang/protobuf/proto",
+			"revision": "7390af9dcd3c33042ebaf2474a1724a83cf1a7e6",
+			"revisionTime": "2016-08-15T22:33:34Z"
+		},
+		{
+			"checksumSHA1": "Q2vw4HZBbnU8BLFt8VrzStwqSJg=",
+			"path": "github.com/matttproud/golang_protobuf_extensions/pbutil",
+			"revision": "d0c3fe89de86839aecf2e0579c40ba3bb336a453",
+			"revisionTime": "2015-10-11T10:25:29Z"
+		},
+		{
+			"checksumSHA1": "KkB+77Ziom7N6RzSbyUwYGrmDeU=",
+			"path": "github.com/prometheus/client_golang/prometheus",
+			"revision": "ea6e1db4cb8127eeb0b6954f7320363e5451820f",
+			"revisionTime": "2016-08-29T08:57:35Z"
+		},
+		{
+			"checksumSHA1": "DvwvOlPNAgRntBzt3b3OSRMS2N4=",
+			"path": "github.com/prometheus/client_model/go",
+			"revision": "fa8ad6fec33561be4280a8f0514318c79d7f6cb6",
+			"revisionTime": "2015-02-12T10:17:44Z"
+		},
+		{
+			"checksumSHA1": "9qo/tkVxlpKy76lQyCnAp2E9tOo=",
+			"path": "github.com/prometheus/common/expfmt",
+			"revision": "812a28da713128def9aad06a32fbcdb7685d13f4",
+			"revisionTime": "2015-12-14T09:27:31Z"
+		},
+		{
+			"checksumSHA1": "GWlM3d2vPYyNATtTFgftS10/A9w=",
+			"path": "github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg",
+			"revision": "812a28da713128def9aad06a32fbcdb7685d13f4",
+			"revisionTime": "2015-12-14T09:27:31Z"
+		},
+		{
+			"checksumSHA1": "17eT7ltyG1SKAqKTlEcK91dRkDc=",
+			"path": "github.com/prometheus/common/model",
+			"revision": "812a28da713128def9aad06a32fbcdb7685d13f4",
+			"revisionTime": "2015-12-14T09:27:31Z"
+		},
+		{
+			"checksumSHA1": "kO2MAzPuortudABaRd7fY+7EaoM=",
+			"path": "github.com/prometheus/procfs",
+			"revision": "406e5b7bfd8201a36e2bb5f7bdae0b03380c2ce8",
+			"revisionTime": "2015-10-29T19:50:50Z"
+		},
+		{
+			"checksumSHA1": "15doxxBfOxOhWExkxjPNo6Y7fEw=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "442cd600860ce722f6615730eb008a37a87b13ee",
+			"revisionTime": "2016-01-13T00:01:27Z"
 		}
 	],
 	"rootPath": "github.com/keegancsmith/kubernetes-disk-exporter"

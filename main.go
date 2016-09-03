@@ -2,15 +2,44 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
+	"net/http"
 	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/pkg/mount"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 var root = flag.String("root", "/rootfs", "Specifies where the rootfs is mounted. Without docker it would be /, but usually you need to mount it with a flag like -v /:/rootfs:ro")
+
+var (
+	namespace = "k8snode"
+	subsystem = "filesystem"
+	labels    = []string{"name"}
+
+	sizeDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, subsystem, "size"),
+		"Filesystem size in bytes.",
+		labels, nil,
+	)
+
+	freeDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, subsystem, "free"),
+		"Filesystem free space in bytes.",
+		labels, nil,
+	)
+
+	availDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, subsystem, "avail"),
+		"Filesystem space available to non-root users in bytes.",
+		labels, nil,
+	)
+)
+
+func init() {
+	prometheus.MustRegister(&collector{})
+}
 
 type vfsStats struct {
 	Total      uint64
@@ -20,13 +49,22 @@ type vfsStats struct {
 	InodesFree uint64
 }
 
-func main() {
+type collector struct{}
+
+func (c *collector) Describe(ch chan<- *prometheus.Desc) {
+	ch <- sizeDesc
+	ch <- freeDesc
+	ch <- availDesc
+}
+
+func (c *collector) Collect(ch chan<- prometheus.Metric) {
 	mounts, err := mount.GetMounts()
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("getmounts failed: %s", err)
+		return
 	}
 	// example mountpath /rootfs/var/lib/kubelet/plugins/kubernetes.io/gce-pd/mounts/gitserver-prod-1
-	prefix := filepath.Join(*root, "/var/lib/kubelet/plugins/kubernetes.io/gce-pd/mounts/")
+	prefix := filepath.Join(*root, "/var/lib/kubelet/plugins/kubernetes.io/gce-pd/mounts/") + "/"
 	for _, m := range mounts {
 		path := m.Mountpoint
 		if !strings.HasPrefix(path, prefix) {
@@ -37,10 +75,24 @@ func main() {
 			log.Printf("%s statfs failed: %s", path, err)
 			continue
 		}
-		fmt.Printf("\n%s %#+v\n", path, v)
-		fmt.Println(100 * float64(v.Free) / float64(v.Total))
-		fmt.Println("total_gb", v.Total/1000000000)
-		fmt.Println("free_gb ", v.Free/1000000000)
-		fmt.Println("avail_gb", v.Avail/1000000000)
+		name := strings.TrimPrefix(path, prefix)
+
+		ch <- prometheus.MustNewConstMetric(
+			sizeDesc, prometheus.GaugeValue,
+			float64(v.Total), name,
+		)
+		ch <- prometheus.MustNewConstMetric(
+			freeDesc, prometheus.GaugeValue,
+			float64(v.Free), name,
+		)
+		ch <- prometheus.MustNewConstMetric(
+			availDesc, prometheus.GaugeValue,
+			float64(v.Avail), name,
+		)
 	}
+}
+
+func main() {
+	http.Handle("/metrics", prometheus.Handler())
+	http.ListenAndServe(":8080", nil)
 }
