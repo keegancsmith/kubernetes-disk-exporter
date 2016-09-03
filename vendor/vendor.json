@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "KcxHd9tdO+5C/G08iehlwZOzNCE=",
+			"path": "github.com/docker/docker/pkg/mount",
+			"revision": "f8656a6e37ded7d1558b4003c7a527861cd3aef6",
+			"revisionTime": "2016-06-21T10:22:28Z"
+		}
+	],
+	"rootPath": "github.com/keegancsmith/kubernetes-disk-exporter"
+}
