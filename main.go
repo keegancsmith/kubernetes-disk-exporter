@@ -11,9 +11,10 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-var root = flag.String("root", "/rootfs", "Specifies where the rootfs is mounted. Without docker it would be /, but usually you need to mount it with a flag like -v /:/rootfs:ro")
-
 var (
+	root = flag.String("root", "/rootfs", "Specifies where the rootfs is mounted. Without docker it would be /, but usually you need to mount it with a flag like -v /:/rootfs:ro")
+	addr = flag.String("addr", ":9200", "Address on which to expose metrics and web interface.")
+
 	namespace = "k8snode"
 	subsystem = "filesystem"
 	labels    = []string{"name"}
@@ -94,5 +95,8 @@ func (c *collector) Collect(ch chan<- prometheus.Metric) {
 
 func main() {
 	http.Handle("/metrics", prometheus.Handler())
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(*addr, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
