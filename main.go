@@ -94,6 +94,7 @@ func (c *collector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func main() {
+	log.Println("listening on", *addr)
 	http.Handle("/metrics", prometheus.Handler())
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
