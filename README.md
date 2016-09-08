@@ -24,9 +24,9 @@ until it works for you.
 
 For each mount the following is exported
 
-* `k8snode_filesystem_size`
-* `k8snode_filesystem_avail`
-* `k8snode_filesystem_free`
+* `k8snode_filesystem_size_bytes`
+* `k8snode_filesystem_avail_bytes`
+* `k8snode_filesystem_free_bytes`
 
 with the labels
 
@@ -38,7 +38,7 @@ The 3 mounts with the least amount of available space as a percentage of total
 space.
 
 ```
-drop_common_labels(bottomk(3, k8snode_filesystem_avail / k8snode_filesystem_size))
+drop_common_labels(bottomk(3, k8snode_filesystem_avail_bytes / k8snode_filesystem_size_bytes))
 ```
 
 ## Future

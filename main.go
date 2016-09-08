@@ -20,19 +20,19 @@ var (
 	labels    = []string{"name"}
 
 	sizeDesc = prometheus.NewDesc(
-		prometheus.BuildFQName(namespace, subsystem, "size"),
+		prometheus.BuildFQName(namespace, subsystem, "size_bytes"),
 		"Filesystem size in bytes.",
 		labels, nil,
 	)
 
 	freeDesc = prometheus.NewDesc(
-		prometheus.BuildFQName(namespace, subsystem, "free"),
+		prometheus.BuildFQName(namespace, subsystem, "free_bytes"),
 		"Filesystem free space in bytes.",
 		labels, nil,
 	)
 
 	availDesc = prometheus.NewDesc(
-		prometheus.BuildFQName(namespace, subsystem, "avail"),
+		prometheus.BuildFQName(namespace, subsystem, "avail_bytes"),
 		"Filesystem space available to non-root users in bytes.",
 		labels, nil,
 	)
