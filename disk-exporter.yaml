@@ -32,15 +32,15 @@ spec:
       - image: keegancsmith/kubernetes-disk-exporter
         name: disk-exporter
         volumeMounts:
-        - mountPath: /rootfs
-          name: rootfs
+        - mountPath: /var/lib/kubelet/plugins/kubernetes.io/gce-pd/mounts
+          name: gcemounts
           readOnly: true
         ports:
         - containerPort: 9200
           hostPort: 9200
           name: scrape
       volumes:
-        - name: rootfs
+        - name: gcemounts
           hostPath:
-            path: /
+            path: /var/lib/kubelet/plugins/kubernetes.io/gce-pd/mounts
                               

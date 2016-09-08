@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	root = flag.String("root", "/rootfs", "Specifies where the rootfs is mounted. Without docker it would be /, but usually you need to mount it with a flag like -v /:/rootfs:ro")
+	root = flag.String("root", "/", "Specifies where the rootfs is mounted. Without docker it would be /, but usually you need to mount it with a flag like -v /:/rootfs:ro")
 	addr = flag.String("addr", ":9200", "Address on which to expose metrics and web interface.")
 
 	namespace = "k8snode"

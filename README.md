@@ -20,6 +20,12 @@ that the service discovery can find the prometheus metric endpoints. If you
 are not using the example prometheus + k8s config, adjust disk-exporter.yaml
 until it works for you.
 
+Note that it mounts the hostPath
+`/var/lib/kubelet/plugins/kubernetes.io/gce-pd/mounts`, which is the only
+supported volume at the moment. Previously I tried just mounting `/` to
+`/rootfs` but ran into kubernetes issues where it could not unmount secrets of
+other containers.
+
 ## Metrics
 
 For each mount the following is exported
