@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    app: disk-exporter
+    name: disk-exporter
+  name: disk-exporter
+spec:
+  clusterIP: None
+  ports:
+  - name: scrape
+    port: 9200
+    protocol: TCP
+  selector:
+    app: disk-exporter
+  type: ClusterIP
+----
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: disk-exporter
+spec:
+  template:
+    metadata:
+      labels:
+        app: disk-exporter
+      name: disk-exporter
+    spec:
+      containers:
+      - image: keegancsmith/kubernetes-disk-exporter
+        name: disk-exporter
+        volumeMounts:
+        - mountPath: /rootfs
+          name: rootfs
+          readOnly: true
+        ports:
+        - containerPort: 9200
+          hostPort: 9200
+          name: scrape
+      volumes:
+        - name: rootfs
+          hostPath:
+            path: /
+                              
