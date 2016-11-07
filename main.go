@@ -36,10 +36,18 @@ var (
 		"Filesystem space available to non-root users in bytes.",
 		labels, nil,
 	)
+
+	fsCollectTotal = prometheus.NewCounter(prometheus.CounterOpts{
+		Namespace: namespace,
+		Subsystem: "collector",
+		Name:      "fs_total",
+		Help:      "Total number of times stats have been collected from the FS.",
+	})
 )
 
 func init() {
 	prometheus.MustRegister(&collector{})
+	prometheus.MustRegister(fsCollectTotal)
 }
 
 type vfsStats struct {
@@ -91,6 +99,7 @@ func (c *collector) Collect(ch chan<- prometheus.Metric) {
 			float64(v.Avail), name,
 		)
 	}
+	fsCollectTotal.Inc()
 }
 
 func main() {
