@@ -4,16 +4,19 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/docker/docker/pkg/mount"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
 var (
-	root = flag.String("root", "/", "Specifies where the rootfs is mounted. Without docker it would be /, but usually you need to mount it with a flag like -v /:/rootfs:ro")
-	addr = flag.String("addr", ":9200", "Address on which to expose metrics and web interface.")
+	root       = flag.String("root", "/", "Specifies where the rootfs is mounted. Without docker it would be /, but usually you need to mount it with a flag like -v /:/rootfs:ro")
+	addr       = flag.String("addr", ":9200", "Address on which to expose metrics and web interface.")
+	shortLived = flag.Duration("short-lived", 0, "Process will cleanly shutdown after the specified duration. This is a workaround for https://github.com/keegancsmith/kubernetes-disk-exporter/issues/1")
 
 	namespace = "k8snode"
 	subsystem = "filesystem"
@@ -103,6 +106,12 @@ func (c *collector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func main() {
+	flag.Parse()
+
+	if *shortLived != 0 {
+		time.AfterFunc(*shortLived, func() { os.Exit(0) })
+	}
+
 	log.Println("listening on", *addr)
 	http.Handle("/metrics", prometheus.Handler())
 	err := http.ListenAndServe(*addr, nil)
